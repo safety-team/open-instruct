@@ -16,11 +16,11 @@ accelerate launch \
     --use_deepspeed \
     --deepspeed_config_file ds_configs/stage3_no_offloading_accelerate.conf \
     open_instruct/finetune.py \
-    --model_name_or_path ../hf_llama2_models/${MODEL_SIZE} \
+    --model_name_or_path "meta-llama/Llama2-7b-hf" \
     --use_flash_attn \
-    --tokenizer_name ../hf_llama2_models/${MODEL_SIZE} \
+    --tokenizer_name "meta-llama/Llama-2-7b-hf" \
     --use_slow_tokenizer \
-    --train_file data/processed/tulu_v2/tulu_v2_data.jsonl \
+    --train_file /net/nfs.cirrascale/mosaic/oe-safety-datasets/v0_2/gpt-3_5-output-v0_2_ready_tulu.jsonl \
     --max_seq_length 8192 \
     --preprocessing_num_workers 128 \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
@@ -30,7 +30,9 @@ accelerate launch \
     --warmup_ratio 0.03 \
     --weight_decay 0. \
     --num_train_epochs 2 \
-    --output_dir output/tulu_v2_${MODEL_SIZE}/ \
+    --output_dir output/Llama2-7b \
+    --checkpointing_steps "epoch"
     --with_tracking \
+    --report_to wandb
     --report_to tensorboard \
     --logging_steps 1
